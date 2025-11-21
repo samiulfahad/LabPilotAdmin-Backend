@@ -8,7 +8,7 @@ const handleError = (e, methodName) => {
   console.log("Error Location: DB File (database > lab.js)");
   console.log(`Method Name: ${methodName}`);
   console.log(`Error Message: ${e.message}`);
-  return null;
+  return { success: false };
 };
 
 const defaultProjection = {
@@ -43,8 +43,9 @@ class Lab {
     this.isActive = isActive;
     this.zoneId = new ObjectId(zoneId); // ✅ Consistent ObjectId
     this.subZoneId = new ObjectId(subZoneId); // ✅ Consistent ObjectId
-    this.labIncentive = 4;
     this.invoicePrice = 10;
+    this.labIncentive = 4;
+    this.monthlyFee = 0;
     this.hasWarning = false;
     this.warning = "";
     this.totalReceipt = 0;
@@ -56,7 +57,6 @@ class Lab {
     this.testList = [];
     this.createdBy = systemId;
     this.createdAt = getGMT();
-    this.updatedAt = getGMT();
   }
 
   // Function 1: Create a new lab
@@ -77,7 +77,6 @@ class Lab {
         // console.log(insertedLab);
         return {
           success: true,
-          insertedId: result.insertedId,
           lab: insertedLab,
         };
       } else {
@@ -106,9 +105,9 @@ class Lab {
       else {
         query[field] = value;
       }
-      //  console.log(query);
+      // console.log(query);
       const labs = await db.collection("labs").find(query).project(defaultProjection).toArray();
-      return labs; // ✅ Always return array (empty if no results)
+      return { success: true, labs }; // ✅ Always return array (empty if no results)
     } catch (e) {
       return handleError(e, "find");
     }
@@ -121,7 +120,7 @@ class Lab {
       if (isLabManagement) projection = { ...projectedDataForLabManagement };
       const db = getClient();
       const labs = await db.collection("labs").find({}).project(projection).toArray();
-      return labs; // ✅ Always return array
+      return { success: true, labs }; // ✅ Always return array
     } catch (e) {
       return handleError(e, "findAll");
     }
@@ -151,19 +150,82 @@ class Lab {
 
       const result = await db.collection("labs").updateOne({ _id: new ObjectId(_id) }, { $set: updateFields });
 
-      return result.modifiedCount > 0;
+      if (result.modifiedCount > 0) {
+        return { success: true };
+      } else {
+        return { success: false };
+      }
     } catch (e) {
       return handleError(e, "updateLab");
     }
   }
 
-  // Function 5: Delete Lab - completely remove from database
+  // Function 5: Deactivate Lab
+  static async deactivate(_id) {
+    try {
+      const db = getClient();
+      const labsCollection = db.collection("labs");
+
+      const result = await labsCollection.updateOne(
+        { _id: new ObjectId(_id) },
+        {
+          $set: {
+            isActive: false,
+            deactivatedAt: getGMT(),
+          },
+        }
+      );
+
+      // Only return true if the update was successful and actually modified a document
+      if (result.matchedCount > 0 && result.modifiedCount > 0) {
+        return { success: true };
+      } else {
+        return { success: false };
+      }
+    } catch (e) {
+      return handleError(e, "deactivate");
+    }
+  }
+
+  // Function 7: Activate Lab
+  static async activate(_id) {
+    try {
+      const db = getClient();
+      const labsCollection = db.collection("labs");
+
+      const result = await labsCollection.updateOne(
+        { _id: new ObjectId(_id) },
+        {
+          $set: {
+            isActive: true,
+            activatedAt: getGMT(),
+          },
+          $unset: { deactivatedAt: "" },
+        }
+      );
+
+      // Only return true if the update was successful and actually modified a document
+      if (result.matchedCount > 0 && result.modifiedCount > 0) {
+        return { success: true };
+      } else {
+        return { success: false };
+      }
+    } catch (e) {
+      return handleError(e, "activate");
+    }
+  }
+
+  // Function 8: Delete Lab - completely remove from database
   static async delete(_id) {
     try {
       const db = getClient();
 
       const result = await db.collection("labs").deleteOne({ _id: new ObjectId(_id) });
-      return result.deletedCount > 0;
+      if (result.deletedCount > 0) {
+        return { success: true };
+      } else {
+        return { success: false };
+      }
     } catch (e) {
       return handleError(e, "deleteById");
     }

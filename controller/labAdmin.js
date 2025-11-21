@@ -2,8 +2,8 @@ const LabAdmin = require("../database/labAdmin");
 
 const createAdmin = async (req, res, next) => {
   try {
-    const { _id, username, password, email, phone } = req.body;
-    const adminData = { username, password, email, phone };
+    const { _id, username, password, email, phone, isActive } = req.body;
+    const adminData = { username, password, email, phone, isActive };
     // console.log(adminData);
     const systemId = 555;
     const result = await LabAdmin.add(_id, adminData, systemId);

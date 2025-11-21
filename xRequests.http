@@ -1,13 +1,13 @@
 ##################### Lab ####################### 
 
-# Route 1: Create a new lab
+# Route 1: Create new lab
 ###
 POST http://localhost:3000/api/v1/lab/account/add HTTP/1.1
 content-type: application/json
 
 {
     "labName": "Bubu Dudu  Diagnostic Center",
-    "labId": 112287,
+    "labId": 112235,
     "address": "123 Medical Street, Healthcare City",
     "contact1": 10723939836,
     "contact2": 98765432101,
@@ -18,14 +18,14 @@ content-type: application/json
 }
 
 
-# Route 2: Get a lab by labId, email, contact
+# Route 2: Get  lab by labId, email, contact
 ###
 GET http://localhost:3000/api/v1/lab/account/search HTTP/1.1
 content-type: application/json
 
 {
     "field":"labId",
-    "value": 112287
+    "value": 112233
 }
 
 
@@ -42,8 +42,8 @@ PATCH http://localhost:3000/api/v1/lab/account/edit HTTP/1.1
 content-type: application/json
 
 {
-    "_id": "69062957890a4e5f74a5908d",
-    "labName": "Bubu Dudu Love Story 2",
+    "_id": "691f708d2942532be83e9461",
+    "labName": "Bubu Dudu Updated",
     "labId": 111100,
     "address": "123 Medical Street, Healthcare City",
     "contact1": 12345678902,
@@ -52,6 +52,15 @@ content-type: application/json
     "zoneId": "68dacb340b6f2cb529c079ca",
     "subZoneId":"68dacb340b6f2cb529c079cb",
     "isActive": true
+}
+
+# Route 5: Deactivate  lab
+###
+PATCH http://localhost:3000/api/v1/lab/account/deactivate HTTP/1.1
+content-type: application/json
+
+{
+    "_id": "691f708d2942532be83e9461"
 }
 
 # Route 5: Delete a lab

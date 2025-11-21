@@ -6,6 +6,7 @@ const createStaff = async (req, res, next) => {
     const { _id, name, username, password, access, email, phone, isActive } = req.body;
     const staffData = { name, username, password, access, email, phone, isActive };
     const systemId = 555;
+    // console.log(_id);
 
     // Fixed: Pass _id as first parameter, then staffData, then systemId
     const result = await LabStaff.add(_id, staffData, systemId);

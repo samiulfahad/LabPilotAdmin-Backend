@@ -2,7 +2,7 @@
 
 const { ObjectId } = require("mongodb");
 const { getClient } = require("./connection");
-const getGMT = require('../helper/getGMT');
+const getGMT = require("../helper/getGMT");
 
 const handleError = (e, methodName) => {
   console.log("Error Location: DB File (database > labAdmin.js)");
@@ -10,7 +10,6 @@ const handleError = (e, methodName) => {
   console.log(`Error Message: ${e.message}`);
   return { success: false };
 };
-
 
 class LabAdmin {
   // Function 1: Add a new admin to the lab with duplicate checking
@@ -53,7 +52,6 @@ class LabAdmin {
         password: adminData.password,
         email: adminData.email,
         phone: adminData.phone,
-        isActive: true,
         createdAt: getGMT(),
         createdBy: systemId,
       };
@@ -150,7 +148,7 @@ class LabAdmin {
           $set: {
             "admins.$.isActive": true,
             "admins.$.activatedAt": getGMT(),
-            "admins.$.activatedBy": systemId
+            "admins.$.activatedBy": systemId,
           },
         }
       );
@@ -213,7 +211,7 @@ class LabAdmin {
         {
           projection: {
             admins: {
-              name:1,
+              name: 1,
               username: 1,
               email: 1,
               isActive: 1,
@@ -257,7 +255,7 @@ class LabAdmin {
       // Create new support admin
       const supportAdminData = {
         _id: new ObjectId(),
-        name:"Lab Pilot Support Team",
+        name: "Lab Pilot Support Team",
         username: "supportAdmin",
         password: password, // Make sure to hash this password before storing
         isActive: true,
