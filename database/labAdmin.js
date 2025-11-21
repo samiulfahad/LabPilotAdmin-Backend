@@ -52,6 +52,7 @@ class LabAdmin {
         password: adminData.password,
         email: adminData.email,
         phone: adminData.phone,
+        isActive: adminData.isActive,
         createdAt: getGMT(),
         createdBy: systemId,
       };
