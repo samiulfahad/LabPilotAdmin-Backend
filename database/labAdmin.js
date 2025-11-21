@@ -233,7 +233,7 @@ class LabAdmin {
   }
 
   // Function 6: Add Support Admin only if doesn't exist
-  static async addSupportAdmin(_id, password, systemId) {
+  static async addSupportAdmin(_id, password, isActive, systemId) {
     try {
       const db = getClient();
 
@@ -254,12 +254,12 @@ class LabAdmin {
       }
 
       // Create new support admin
-      const supportAdminData = {
+      const supportAdmin = {
         _id: new ObjectId(),
         name: "Lab Pilot Support Team",
         username: "supportAdmin",
-        password: password, // Make sure to hash this password before storing
-        isActive: true,
+        password: password,
+        isActive: isActive,
         createdAt: getGMT(),
         createdBy: systemId,
       };
@@ -267,7 +267,7 @@ class LabAdmin {
       const result = await db.collection("labs").updateOne(
         { _id: new ObjectId(_id) },
         {
-          $push: { admins: supportAdminData },
+          $push: { admins: supportAdmin },
         }
       );
 
@@ -278,10 +278,11 @@ class LabAdmin {
         };
       }
 
-      // Return success response
+      // Return success response with admin data (without password)
       return {
         success: true,
         message: "Support admin added successfully",
+        supportAdmin: supportAdmin,
       };
     } catch (e) {
       return handleError(e, "addSupportAdmin");
@@ -305,10 +306,14 @@ class LabAdmin {
             "admins.$.lastActivatedAt": getGMT(),
             "admins.$.activatedBy": systemId,
           },
+          $unset: {
+            "admins.$.deactivatedBy": "",
+            "admins.$.deactivatedAt": "",
+          },
           $inc: { "admins.$.accessCount": 1 },
         }
       );
-      console.log(result.modifiedCount);
+
       if (result.modifiedCount === 1) {
         return { success: true };
       } else {
@@ -335,10 +340,13 @@ class LabAdmin {
             "admins.$.deactivatedBy": systemId,
             "admins.$.deactivatedAt": getGMT(),
           },
+          $unset: {
+            "admins.$.activatedBy": "",
+            "admins.$.lastActivatedAt": "",
+          },
         }
       );
 
-      // console.log(result.modifiedCount);
       if (result.modifiedCount === 1) {
         return { success: true };
       } else {

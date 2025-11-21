@@ -1,5 +1,6 @@
 const LabAdmin = require("../database/labAdmin");
 
+// Fn 1: Create a new admin
 const createAdmin = async (req, res, next) => {
   try {
     const { _id, username, password, email, phone, isActive } = req.body;
@@ -19,22 +20,7 @@ const createAdmin = async (req, res, next) => {
   }
 };
 
-const deactivateAdmin = async (req, res, next) => {
-  try {
-    const { _id, adminId } = req.body;
-    // console.log(adminData);
-    const systemId = 555;
-    const result = await LabAdmin.deactivate(_id, adminId, systemId);
-    if (result.success) {
-      return res.status(201).send({ success: true, adminId: result.adminId });
-    } else {
-      return res.status(400).send({ success: false });
-    }
-  } catch (e) {
-    next(e);
-  }
-};
-
+// Fn 2: Activate Admin
 const activateAdmin = async (req, res, next) => {
   try {
     const { _id, adminId } = req.body;
@@ -51,6 +37,24 @@ const activateAdmin = async (req, res, next) => {
   }
 };
 
+// Fn 3: Deactivate Admin
+const deactivateAdmin = async (req, res, next) => {
+  try {
+    const { _id, adminId } = req.body;
+    // console.log(adminData);
+    const systemId = 555;
+    const result = await LabAdmin.deactivate(_id, adminId, systemId);
+    if (result.success) {
+      return res.status(201).send({ success: true, adminId: result.adminId });
+    } else {
+      return res.status(400).send({ success: false });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Fn 4: List of all admins of a lab
 const listAdmins = async (req, res, next) => {
   try {
     const { _id } = req.body;
@@ -67,6 +71,7 @@ const listAdmins = async (req, res, next) => {
   }
 };
 
+// Fn 5: Delete admin
 const deleteAdmin = async (req, res, next) => {
   try {
     const { _id, adminId } = req.body;
@@ -83,14 +88,15 @@ const deleteAdmin = async (req, res, next) => {
   }
 };
 
+// Fn 6: Create Supoort Admin
 const createSupportAdmin = async (req, res, next) => {
   try {
-    const { _id, password } = req.body;
+    const { _id, password, isActive } = req.body;
     // console.log(adminData);
     const systemId = 555;
-    const result = await LabAdmin.addSupportAdmin(_id, password, systemId);
+    const result = await LabAdmin.addSupportAdmin(_id, password, isActive, systemId);
     if (result.success) {
-      return res.status(201).send({ success: true });
+      return res.status(201).send(result.supportAdmin);
     } else {
       return res.status(400).send({ success: false });
     }
