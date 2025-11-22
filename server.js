@@ -10,6 +10,7 @@ const labZoneRouter = require("./routes/labZone");
 const labTestRouter = require("./routes/labTest");
 const labAdminRouter = require("./routes/labAdmin");
 const labStaffRouter = require("./routes/labStaff");
+const labBilling = require("./routes/labBilling");
 
 // const categoryRouter = require("./routes/category");
 
@@ -18,14 +19,9 @@ const app = express();
 // Middlewares
 app.use(express.json({ limit: "10kb" }));
 const corsOptions = {
-  origin:  [
-    "http://localhost:5173",
-    "https://labpilot.netlify.app"
-  ], // Allow only your frontend
+  origin: ["http://localhost:5173", "https://labpilot.netlify.app"], // Allow only your frontend
   credentials: true, // Allow cookies and authorization headers
 };
-
-
 
 app.use(cors(corsOptions));
 
@@ -40,6 +36,7 @@ app.use("/api/v1/lab/zone", labZoneRouter);
 app.use("/api/v1/lab/test", labTestRouter);
 app.use("/api/v1/lab/admin", labAdminRouter);
 app.use("/api/v1/lab/staff", labStaffRouter);
+app.use("/api/v1/lab/billing", labBilling);
 
 // 404 Not Found Handler
 app.use((req, res, next) => {

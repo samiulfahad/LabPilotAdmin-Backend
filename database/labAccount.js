@@ -44,7 +44,7 @@ class Lab {
     this.zoneId = new ObjectId(zoneId); // ✅ Consistent ObjectId
     this.subZoneId = new ObjectId(subZoneId); // ✅ Consistent ObjectId
     this.invoicePrice = 10;
-    this.labIncentive = 4;
+    this.labCommission = 4;
     this.monthlyFee = 0;
     this.hasWarning = false;
     this.warning = "";
