@@ -13,10 +13,12 @@ const handleError = (e, methodName) => {
 
 class TestSchema {
   // Function 1: create a test schema
-  static async addNew(schema, systemId) {
+  static async addNew(categoryId, testId, schema, systemId) {
     try {
       const db = getClient();
       const newSchema = {
+        categoryId,
+        testId,
         ...schema,
         createdBy: systemId,
         createdAt: getGMT(),
