@@ -406,3 +406,60 @@ content-type: application/json
      "_id": "690cc86249b30bec94ae353e",
      "staffId": "690daf1035880f538bc16d80"
 }
+
+
+#################### Test Schema  ####################### 
+
+# Route 1: Add Schema
+###
+POST http://localhost:3000/api/v1/test/schema/add HTTP/1.1
+
+
+# Route 3: Search Schema
+###
+GET http://localhost:3000/api/v1/test/schema/search HTTP/1.1
+content-type: application/json
+
+{
+    "schemaId": "69278b0308b20833eca8d969"
+}
+
+# Route 3: Get all schemas
+###
+GET http://localhost:3000/api/v1/test/schema/all HTTP/1.1
+content-type: application/json
+
+
+# Route 4: Update schema
+###
+PATCH http://localhost:3000/api/v1/test/schema/update HTTP/1.1
+content-type: application/json
+
+
+
+# Route 5: Activate schema 
+###
+PATCH http://localhost:3000/api/v1/test/schema/activate HTTP/1.1
+content-type: application/json
+
+{
+    "schemaId": "69278b0308b20833eca8d969"
+}
+
+# Route 6: Deactivate schema 
+###
+PATCH http://localhost:3000/api/v1/test/schema/deactivate HTTP/1.1
+content-type: application/json
+
+{
+    "schemaId": "69278b0308b20833eca8d969"
+}
+
+# Route 7: Delete Schema
+###
+DELETE http://localhost:3000/api/v1/test/schema/delete HTTP/1.1
+content-type: application/json
+
+{
+    "schemaId": "69278a9380080a13a959c6ff"
+}
