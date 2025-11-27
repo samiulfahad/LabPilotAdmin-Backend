@@ -22,21 +22,13 @@ class TestSchema {
         ...schema,
         createdBy: systemId,
         createdAt: getGMT(),
-        isLive: false,
       };
       const result = await db.collection("testSchema").insertOne(newSchema);
 
       if (result.acknowledged && result.insertedId) {
-        return {
-          success: true,
-          insertedId: result.insertedId,
-          message: "Test schema created successfully",
-        };
+        return { success: true };
       } else {
-        return {
-          success: false,
-          error: "Failed to create test schema",
-        };
+        return { success: false };
       }
     } catch (e) {
       return handleError(e, "addNew");
