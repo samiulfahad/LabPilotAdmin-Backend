@@ -7,22 +7,31 @@ const {
   deleteSchema,
   updateSchema,
   activateSchema,
-  deactivateSchema
+  deactivateSchema,
+  getSchemaByTestId,
+  getSchemasByCategoryId,
 } = require("../controller/testSchema");
+
 // Add new schema
 router.post("/add", createTestSchema);
 
-// Search a schema
-router.get("/search", getSchema);
+// Search a schema by schemaId
+router.get("/search/:schemaId", getSchema);
 
 // Get all Schema
 router.get("/all", listSchema);
 
+// Get schema by testId
+router.get("/test/:testId", getSchemaByTestId);
+
+// Get schemas by categoryId
+router.get("/category/:categoryId", getSchemasByCategoryId);
+
 // Delete a schema
-router.delete("/delete", deleteSchema);
+router.delete("/delete/:schemaId", deleteSchema);
 
 // Update Schema
-router.patch("/update", updateSchema);
+router.put("/update", updateSchema);
 
 // Activate Schema
 router.patch("/activate", activateSchema);

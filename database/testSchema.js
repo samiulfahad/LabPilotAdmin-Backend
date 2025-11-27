@@ -62,17 +62,11 @@ class TestSchema {
     try {
       const db = getClient();
       const list = await db.collection("testSchema").find({}).toArray();
-      console.log(list);
+      // console.log(list);
       if (list) {
-        return {
-          success: true,
-          list,
-        };
+        return { success: true, list };
       } else {
-        return {
-          success: false,
-          error: "Failed to fetch all test schemas",
-        };
+        return { success: false };
       }
     } catch (e) {
       return handleError(e, "findAll");
@@ -101,7 +95,7 @@ class TestSchema {
     }
   }
 
-  // Function 5: Update a schema
+  // Function 5: Update a schema - Simple and reliable
   static async update(schemaId, updateData, systemId) {
     try {
       const db = getClient();
@@ -113,24 +107,38 @@ class TestSchema {
         updatedAt: getGMT(),
       };
 
-      const result = await db.collection("testSchema").findOneAndUpdate(
-        { _id: new ObjectId(schemaId) },
-        { $set: updateFields },
-        { returnDocument: "after" } // Returns the updated document
-      );
+      // Update the document
+      const updateResult = await db
+        .collection("testSchema")
+        .updateOne({ _id: new ObjectId(schemaId) }, { $set: updateFields });
 
-      if (result.value) {
-        return {
-          success: true,
-          updatedSchema: result.value,
-          message: "Schema updated successfully",
-        };
-      } else {
+      console.log("Update result:", updateResult);
+
+      // Check if document was found and updated
+      if (updateResult.matchedCount === 0) {
         return {
           success: false,
-          error: "Schema not found or update failed",
+          error: "Schema not found",
         };
       }
+
+      if (updateResult.modifiedCount === 0) {
+        return {
+          success: false,
+          error: "No changes made to the schema",
+        };
+      }
+
+      // Fetch the updated document
+      const updatedSchema = await db.collection("testSchema").findOne({
+        _id: new ObjectId(schemaId),
+      });
+
+      return {
+        success: true,
+        updatedSchema: updatedSchema,
+        message: "Schema updated successfully",
+      };
     } catch (e) {
       return handleError(e, "update");
     }
@@ -195,6 +203,111 @@ class TestSchema {
       return { success: false };
     } catch (e) {
       return handleError(e, "deactivate");
+    }
+  }
+
+  // Function 8: Find schema by testId
+  static async findByTestId(testId) {
+    try {
+      const db = getClient();
+      const list = await db.collection("testSchema").find({ testId }).toArray();
+
+      if (list) {
+        return {
+          success: true,
+          list,
+        };
+      } else {
+        return {
+          success: false,
+          error: "No schema found for this test",
+        };
+      }
+    } catch (e) {
+      return handleError(e, "findByTestId");
+    }
+  }
+
+  // Function 9: Find schemas by categoryId
+  static async findByCategoryId(categoryId) {
+    try {
+      const db = getClient();
+      const list = await db
+        .collection("testSchema")
+        .find({ categoryId })
+        .toArray();
+      console.log(list);
+      if (list) {
+        return { success: true, list };
+      } else {
+        return { success: false };
+      }
+    } catch (e) {
+      return handleError(e, "findByCategoryId");
+    }
+  }
+  // Function 10: Get all schemas with populated category and test names
+  static async findAllPopulated() {
+    try {
+      const db = getClient();
+
+      // Using aggregation to join with categories collection
+      const list = await db
+        .collection("testSchema")
+        .aggregate([
+          {
+            $lookup: {
+              from: "categories", // your categories collection name
+              localField: "categoryId",
+              foreignField: "_id",
+              as: "categoryInfo",
+            },
+          },
+          {
+            $unwind: {
+              path: "$categoryInfo",
+              preserveNullAndEmptyArrays: true, // in case category is deleted
+            },
+          },
+          {
+            $addFields: {
+              categoryName: "$categoryInfo.categoryName",
+              // Find the specific test within the category's tests array
+              testInfo: {
+                $arrayElemAt: [
+                  {
+                    $filter: {
+                      input: "$categoryInfo.tests",
+                      as: "test",
+                      cond: { $eq: ["$$test._id", "$testId"] },
+                    },
+                  },
+                  0,
+                ],
+              },
+            },
+          },
+          {
+            $addFields: {
+              testNameFromCollection: "$testInfo.testName",
+            },
+          },
+          {
+            $project: {
+              categoryInfo: 0,
+              testInfo: 0,
+            },
+          },
+        ])
+        .toArray();
+
+      if (list) {
+        return { success: true, list };
+      } else {
+        return { success: false };
+      }
+    } catch (e) {
+      return handleError(e, "findAllPopulated");
     }
   }
 }
