@@ -417,12 +417,8 @@ POST http://localhost:3000/api/v1/test/schema/add HTTP/1.1
 
 # Route 3: Search Schema
 ###
-GET http://localhost:3000/api/v1/test/schema/search HTTP/1.1
+GET http://localhost:3000/api/v1/test/schema/search/6928f2e86c897905c4343b34 HTTP/1.1
 content-type: application/json
-
-{
-    "schemaId": "69278b0308b20833eca8d969"
-}
 
 # Route 3: Get all schemas
 ###

@@ -99,7 +99,7 @@ const activateSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 555;
-    const { schemaId, isLive } = req.body;
+    const { schemaId } = req.params;
 
     const result = await TestSchema.activate(schemaId, systemId);
 
@@ -118,7 +118,7 @@ const deactivateSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 555;
-    const { schemaId } = req.body;
+    const { schemaId } = req.params;
 
     const result = await TestSchema.deactivate(schemaId, systemId);
 

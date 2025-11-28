@@ -34,9 +34,9 @@ router.delete("/delete/:schemaId", deleteSchema);
 router.put("/update", updateSchema);
 
 // Activate Schema
-router.patch("/activate", activateSchema);
+router.patch("/activate/:schemaId", activateSchema);
 
 // Deactivate Schema
-router.patch("/deactivate", deactivateSchema);
+router.patch("/deactivate/:schemaId", deactivateSchema);
 
 module.exports = router;
