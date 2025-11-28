@@ -211,7 +211,7 @@ class TestSchema {
     try {
       const db = getClient();
       const list = await db.collection("testSchema").find({ testId }).toArray();
-
+      console.log(list);
       if (list) {
         return {
           success: true,
@@ -232,10 +232,7 @@ class TestSchema {
   static async findByCategoryId(categoryId) {
     try {
       const db = getClient();
-      const list = await db
-        .collection("testSchema")
-        .find({ categoryId })
-        .toArray();
+      const list = await db.collection("testSchema").find({ categoryId }).toArray();
       console.log(list);
       if (list) {
         return { success: true, list };

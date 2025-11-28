@@ -140,6 +140,7 @@ const getSchemaByTestId = async (req, res, next) => {
 
     const result = await TestSchema.findByTestId(testId);
     if (result.success) {
+      // console.log(result.list);
       return res.status(200).send(result.list);
     } else {
       return res.status(404).send({
@@ -159,6 +160,7 @@ const getSchemasByCategoryId = async (req, res, next) => {
     console.log("Fetching schemas for categoryId:", categoryId);
 
     const result = await TestSchema.findByCategoryId(categoryId);
+    console.log(result.list);
     if (result.success) {
       return res.status(200).send(result.list);
     } else {
