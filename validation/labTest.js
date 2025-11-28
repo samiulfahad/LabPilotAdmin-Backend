@@ -1,8 +1,8 @@
 const { body } = require("express-validator");
 const { validateMongoId } = require("./mongoId");
 
-// Validate testName
-const validateTestName = body("testName")
+// Validate name
+const validateName = body("name")
   .notEmpty()
   .withMessage("Test name is required.")
   .isString()
@@ -12,14 +12,6 @@ const validateTestName = body("testName")
   .isLength({ max: 70 })
   .withMessage("Test name must not exceed 70 characters.");
 
-const validateIsOnline = body("isOnline")
-  .notEmpty()
-  .withMessage("Online status is required.")
-  .bail()
-  .escape()
-  .isBoolean()
-  .withMessage("Online status must be a boolean (true or false).")
-  .toBoolean();
 
 // Validate categoryName
 const validateCatName = body("categoryName")
@@ -35,7 +27,7 @@ const validateCatName = body("categoryName")
 const validateAddCat = [validateCatName];
 const validateEditCat = [validateMongoId("categoryId", "Category ID"), ...validateAddCat];
 
-const validateAddTest = [validateTestName, validateIsOnline, validateMongoId("categoryId", "Category ID")];
+const validateAddTest = [validateName, validateMongoId("categoryId", "Category ID")];
 const validateEditTest = [validateMongoId("testId", "Test ID"), ...validateAddTest];
 
 module.exports = { validateAddTest, validateEditTest, validateAddCat, validateEditCat };

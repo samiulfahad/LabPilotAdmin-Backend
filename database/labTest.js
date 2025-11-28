@@ -134,14 +134,14 @@ class Test {
   }
 
   // Function 6: Create a test
-  static async createTest(categoryId, testName, isOnline, systemId) {
+  static async createTest(categoryId, name, systemId) {
     try {
       const db = getClient();
 
       // Check if test name already exists in this category
       const existing = await db.collection("tests").findOne({
         _id: new ObjectId(categoryId),
-        "tests.testName": testName,
+        "tests.name": name,
       });
 
       if (existing) {
@@ -150,8 +150,8 @@ class Test {
 
       const test = {
         _id: new ObjectId(),
-        testName: testName,
-        isOnline: isOnline,
+        name: name,
+        defaultSchema: null,
         createdAt: getGMT(),
         createdBy: systemId,
       };
@@ -185,7 +185,7 @@ class Test {
   }
 
   // Function 7: Update test
-  static async updateTest(categoryId, testId, newTestName, isOnline, systemId) {
+  static async updateTest(categoryId, testId, newName, defaultSchema, systemId) {
     try {
       const db = getClient();
 
@@ -194,7 +194,7 @@ class Test {
         _id: new ObjectId(categoryId),
         tests: {
           $elemMatch: {
-            testName: newTestName,
+            name: newName,
             _id: { $ne: new ObjectId(testId) },
           },
         },
@@ -211,8 +211,8 @@ class Test {
         },
         {
           $set: {
-            "tests.$.testName": newTestName,
-            "tests.$.isOnline": isOnline,
+            "tests.$.name": newName,
+            "tests.$.defaultSchema": defaultSchema,
             "tests.$.updatedAt": getGMT(),
             "tests.$.updatedBy": systemId,
             updatedAt: getGMT(),

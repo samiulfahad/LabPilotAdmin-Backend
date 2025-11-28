@@ -154,7 +154,7 @@ class TestSchema {
         { _id: new ObjectId(schemaId) },
         {
           $set: {
-            isLive: true,
+            isActive: true,
             activatedBy: systemId,
             activatedAt: getGMT(),
           },
@@ -185,7 +185,7 @@ class TestSchema {
         { _id: new ObjectId(schemaId) },
         {
           $set: {
-            isLive: false,
+            isActive: false,
             deactivatedBy: systemId,
             deactivatedAt: getGMT(),
           },
@@ -286,7 +286,7 @@ class TestSchema {
           },
           {
             $addFields: {
-              testNameFromCollection: "$testInfo.testName",
+              nameFromCollection: "$testInfo.name",
             },
           },
           {

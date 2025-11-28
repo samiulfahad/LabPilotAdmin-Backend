@@ -212,7 +212,7 @@ content-type: application/json
 
 {
     "categoryId":"6908f7046cefa0d6c1602163",
-    "testName": "Test 2",
+    "name": "Test 2",
     "isOnline": false
 }
 
@@ -226,7 +226,7 @@ content-type: application/json
 {
     "categoryId": "6908ee178fdfb3850b1f71b5",
     "testId" : "6908f443cda96110c6acab54",
-    "testName": "Xxxx",
+    "name": "Xxxx",
     "isOnline": false
 }
 

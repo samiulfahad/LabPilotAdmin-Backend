@@ -7,8 +7,8 @@ const createTestSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user (from middleware)
     const systemId = req.user?.id || req.user?.systemId || 555; // Fallback for development
-    const { categoryId, testId, testName, testDescription, isActive, isDefault, fields } = req.body;
-    const testSchema = { categoryId, testId, testName, testDescription, isActive, isDefault, fields };
+    const { categoryId, testId, name, description, isActive, fields } = req.body;
+    const testSchema = { categoryId, testId, name, description, isActive, fields };
     // console.log(testSchema);
 
     const result = await TestSchema.addNew(categoryId, testId, testSchema, systemId);

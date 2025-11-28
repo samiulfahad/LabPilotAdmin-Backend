@@ -88,8 +88,8 @@ const deleteCategory = async (req, res, next) => {
 const createTest = async (req, res, next) => {
   try {
     const systemId = 555;
-    const { categoryId, testName, isOnline } = req.body;
-    const result = await Test.createTest(categoryId, testName, isOnline, systemId);
+    const { categoryId, name } = req.body;
+    const result = await Test.createTest(categoryId, name, systemId);
     if (result.success) {
       return res.status(201).send(result.test);
     } else if (result.duplicate) {
@@ -106,8 +106,8 @@ const createTest = async (req, res, next) => {
 const updateTest = async (req, res, next) => {
   try {
     const systemId = 555;
-    const { categoryId, testId, testName, isOnline } = req.body;
-    const result = await Test.updateTest(categoryId, testId, testName, isOnline, systemId);
+    const { categoryId, testId, name, defaultSchema } = req.body;
+    const result = await Test.updateTest(categoryId, testId, name, defaultSchema, systemId);
     if (result.success) {
       return res.status(200).send(result.test);
     } else if (result.duplicate) {

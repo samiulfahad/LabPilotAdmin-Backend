@@ -1,8 +1,8 @@
 const { body } = require("express-validator");
 const { validateMongoId } = require("./mongoId");
 
-// Validate testName
-const validateTestName = body("testName")
+// Validate Name
+const validateName = body("name")
   .notEmpty()
   .withMessage("Test name is required.")
   .isString()
@@ -35,7 +35,7 @@ const validateCatName = body("categoryName")
 const validateAddCat = [validateCatName];
 const validateEditCat = [validateMongoId("categoryId", "Category ID"), ...validateAddCat];
 
-const validateAddTest = [validateTestName, validateIsOnline, validateMongoId("categoryId", "Category ID")];
+const validateAddTest = [validateName, validateIsOnline, validateMongoId("categoryId", "Category ID")];
 const validateEditTest = [validateMongoId("testId", "Test ID"), ...validateAddTest];
 
 module.exports = { validateAddTest, validateEditTest, validateAddCat, validateEditCat };
