@@ -2,7 +2,7 @@
 
 const { ObjectId } = require("mongodb");
 const { getClient } = require("./connection");
-const getGMT = require("../helper/getGMT")
+const getGMT = require("../helper/getGMT");
 
 const handleError = (e, methodName) => {
   console.log("Error Location: DB File (database > test.js)");
@@ -156,29 +156,25 @@ class Test {
         createdBy: systemId,
       };
 
-      const result = await db.collection("tests").findOneAndUpdate(
+      // Use updateOne instead
+      const result = await db.collection("tests").updateOne(
         { _id: new ObjectId(categoryId) },
         {
           $push: {
             tests: test,
           },
-          $set: {
-            updatedAt: getGMT(),
-            updatedBy: systemId,
-          },
-        },
-        {
-          returnDocument: "after", // Returns the updated document
-          includeResultMetadata: true, // Includes operation metadata
         }
       );
 
-      if (!result.value) {
-        return { success: false };
+      if (result.modifiedCount === 0) {
+        return { success: false, message: "Category not found or test not added" };
       }
 
-      // Return the updated category document with the new tests
-      return { success: true, test: result.value };
+      // Return the test object we created
+      return {
+        success: true,
+        test: test, // This is the inserted test
+      };
     } catch (e) {
       return handleError(e, "createTest");
     }
@@ -260,6 +256,33 @@ class Test {
       return result.modifiedCount > 0 ? { success: true } : { success: false };
     } catch (e) {
       return handleError(e, "deleteTest");
+    }
+  }
+
+  static async setTestSchema(categoryId, testId, schemaId, systemId) {
+    try {
+      const db = getClient();
+
+      // Update the specific test within the tests array
+      const result = await db.collection("tests").updateOne(
+        {
+          _id: new ObjectId(categoryId),
+          "tests._id": new ObjectId(testId),
+        },
+        {
+          $set: {
+            "tests.$.defaultSchema": schemaId,
+            "tests.$.defaultSchemaAddedBy": systemId,
+            "tests.$.defaultSchemaAddedAt": getGMT(),
+            updatedAt: getGMT(),
+            updatedBy: systemId,
+          },
+        }
+      );
+
+      return result.modifiedCount > 0 ? { success: true } : { success: false };
+    } catch (e) {
+      return handleError(e, "setTestSchema");
     }
   }
 }

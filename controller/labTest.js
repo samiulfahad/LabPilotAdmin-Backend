@@ -72,8 +72,8 @@ const updateCategory = async (req, res, next) => {
 const deleteCategory = async (req, res, next) => {
   try {
     const systemId = 555;
-    const _id = req.body.categoryId;
-    const result = await Test.deleteCategory(_id, systemId);
+    const { categoryId } = req.params;
+    const result = await Test.deleteCategory(categoryId, systemId);
     if (result.success) {
       return res.status(200).send({ success: true, msg: "Category deleted" });
     } else {
@@ -89,6 +89,7 @@ const createTest = async (req, res, next) => {
   try {
     const systemId = 555;
     const { categoryId, name } = req.body;
+    // console.log(categoryId, name);
     const result = await Test.createTest(categoryId, name, systemId);
     if (result.success) {
       return res.status(201).send(result.test);
@@ -124,7 +125,9 @@ const updateTest = async (req, res, next) => {
 const deleteTest = async (req, res, next) => {
   try {
     const systemId = 555;
-    const { categoryId, testId } = req.body;
+    const { categoryId, testId } = req.query;
+
+    console.log(req.query);
     const result = await Test.deleteTest(categoryId, testId, systemId);
     if (result.success) {
       return res.status(200).send({ success: true, msg: "Test deleted" });
@@ -132,6 +135,26 @@ const deleteTest = async (req, res, next) => {
       return res.status(400).send({
         success: false,
         msg: "Test not found or was not deleted",
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Function 8: Delete a test
+const setTestSchema = async (req, res, next) => {
+  try {
+    const systemId = 555;
+    const { categoryId, testId, schemaId } = req.body;
+    console.log("test ID " + testId);
+    console.log("schema ID " + schemaId);
+    const result = await Test.setTestSchema(categoryId, testId, schemaId, systemId);
+    if (result.success) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(400).send({
+        success: false,
       });
     }
   } catch (e) {
@@ -151,4 +174,6 @@ module.exports = {
   createTest,
   updateTest,
   deleteTest,
+
+  setTestSchema,
 };

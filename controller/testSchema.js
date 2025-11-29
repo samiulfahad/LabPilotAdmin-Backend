@@ -15,7 +15,7 @@ const createTestSchema = async (req, res, next) => {
 
     if (result.success) {
       // console.log(result.lab);
-      return res.status(201).send({ success: true });
+      return res.status(201).send({ success: true, schemaId: result.schemaId });
     } else {
       return res.status(400).send({ success: false });
     }
@@ -136,7 +136,7 @@ const deactivateSchema = async (req, res, next) => {
 const getSchemaByTestId = async (req, res, next) => {
   try {
     const { testId } = req.params;
-    console.log("Fetching schema for testId:", testId);
+    // console.log("Fetching schema for testId:", testId);
 
     const result = await TestSchema.findByTestId(testId);
     if (result.success) {

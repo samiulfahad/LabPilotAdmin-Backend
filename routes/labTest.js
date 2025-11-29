@@ -12,6 +12,7 @@ const {
   createTest,
   updateTest,
   deleteTest,
+  setTestSchema,
 } = require("../controller/labTest");
 
 const { validateAddTest, validateAddCat, validateEditTest, validateEditCat } = require("../validation/labTest");
@@ -31,7 +32,7 @@ router.get("/category/all", listTests);
 router.patch("/category/edit", validateEditCat, handleValidationErrors, updateCategory);
 
 // Delete a category with all tests associated
-router.delete("/category/delete", validateMongoId("categoryId", "Caegory ID"), handleValidationErrors, deleteCategory);
+router.delete("/category/delete/:categoryId", deleteCategory);
 
 // Create a test
 router.post("/add", validateAddTest, handleValidationErrors, createTest);
@@ -39,13 +40,10 @@ router.post("/add", validateAddTest, handleValidationErrors, createTest);
 // Update a test
 router.patch("/edit", validateEditTest, handleValidationErrors, updateTest);
 
+// Update a test
+router.patch("/setTestSchema", setTestSchema);
+
 // Delete a test
-router.delete(
-  "/delete",
-  validateMongoId("testId", "Test ID"),
-  validateMongoId("categoryId", "Category ID"),
-  handleValidationErrors,
-  deleteTest
-);
+router.delete("/delete", deleteTest);
 
 module.exports = router;

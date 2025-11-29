@@ -26,7 +26,7 @@ class TestSchema {
       const result = await db.collection("testSchema").insertOne(newSchema);
 
       if (result.acknowledged && result.insertedId) {
-        return { success: true };
+        return { success: true, schemaId: result.insertedId };
       } else {
         return { success: false };
       }
@@ -211,7 +211,7 @@ class TestSchema {
     try {
       const db = getClient();
       const list = await db.collection("testSchema").find({ testId }).toArray();
-      console.log(list);
+      // console.log(list);
       if (list) {
         return {
           success: true,
