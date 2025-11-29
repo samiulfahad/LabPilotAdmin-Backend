@@ -7,9 +7,9 @@ const createLab = async (req, res, next) => {
   try {
     // Get systemId from authenticated user (from middleware)
     const systemId = req.user?.id || req.user?.systemId || 555; // Fallback for development
-    const { labName, labId, address, contact1, contact2, email, isActive, zoneId, subZoneId } = req.body;
+    const { name, labId, address, contact1, contact2, email, isActive, zoneId, subZoneId } = req.body;
     const lab = new Lab(
-      labName,
+      name,
       parseInt(labId),
       address,
       contact1,
@@ -72,8 +72,8 @@ const updateLab = async (req, res, next) => {
   try {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 777;
-    const { _id, labName, address, zoneId, subZoneId, contact1, contact2, email, isActive } = req.body;
-    const newData = { labName, address, zoneId, subZoneId, contact1, contact2, email, isActive };
+    const { _id, name, address, zoneId, subZoneId, contact1, contact2, email, isActive } = req.body;
+    const newData = { , address, zoneId, subZoneId, contact1, contact2, email, isActive };
 
     const result = await Lab.update(_id, newData, systemId);
     if (result.success) {

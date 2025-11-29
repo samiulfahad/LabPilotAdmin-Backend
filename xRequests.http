@@ -6,7 +6,7 @@ POST http://localhost:3000/api/v1/lab/account/add HTTP/1.1
 content-type: application/json
 
 {
-    "labName": "Bubu Dudu  Diagnostic Center",
+    "name": "Bubu Dudu  Diagnostic Center",
     "labId": 112235,
     "address": "123 Medical Street, Healthcare City",
     "contact1": 10723939836,
@@ -43,7 +43,7 @@ content-type: application/json
 
 {
     "_id": "691f708d2942532be83e9461",
-    "labName": "Bubu Dudu Updated",
+    "name": "Bubu Dudu Updated",
     "labId": 111100,
     "address": "123 Medical Street, Healthcare City",
     "contact1": 12345678902,

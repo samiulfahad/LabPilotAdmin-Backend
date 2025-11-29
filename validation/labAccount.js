@@ -2,8 +2,8 @@
 const { body } = require("express-validator");
 const { validateMongoId } = require("./mongoId");
 
-// Validate labName
-const validateLabName = body("labName")
+// Validate name
+const validateName = body("name")
   .notEmpty()
   .withMessage("Lab name is required.")
   .bail()
@@ -87,7 +87,7 @@ const validateZone = validateMongoId("zoneId", "Zone ID");
 const validateSubZone = validateMongoId("subZoneId", "Subzone ID");
 
 const validateAddLabAccount = [
-  validateLabName,
+  validateName,
   validateLabId,
   validateAddress,
   validateContact1,

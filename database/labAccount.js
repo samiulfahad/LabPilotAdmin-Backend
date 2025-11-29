@@ -12,7 +12,7 @@ const handleError = (e, methodName) => {
 };
 
 const defaultProjection = {
-  labName: 1,
+  : 1,
   labId: 1,
   address: 1,
   email: 1,
@@ -33,8 +33,8 @@ const projectedDataForLabManagement = {
 };
 
 class Lab {
-  constructor(labName, labId, address, contact1, contact2, email, isActive, zoneId, subZoneId, systemId) {
-    this.labName = labName;
+  constructor(name, labId, address, contact1, contact2, email, isActive, zoneId, subZoneId, systemId) {
+    this.name = name;
     this.labId = labId;
     this.address = address;
     this.contact1 = contact1.toString();
