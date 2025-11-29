@@ -38,7 +38,7 @@ app.use("/api/v1/lab/test", labTestRouter);
 app.use("/api/v1/lab/admin", labAdminRouter);
 app.use("/api/v1/lab/staff", labStaffRouter);
 app.use("/api/v1/lab/billing", labBilling);
-app.use("/api/v1/test/schema", testSchema);
+app.use("/api/v1/schema", testSchema);
 
 // 404 Not Found Handler
 app.use((req, res, next) => {

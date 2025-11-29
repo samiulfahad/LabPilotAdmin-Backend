@@ -107,8 +107,8 @@ const createTest = async (req, res, next) => {
 const updateTest = async (req, res, next) => {
   try {
     const systemId = 555;
-    const { categoryId, testId, name, defaultSchema } = req.body;
-    const result = await Test.updateTest(categoryId, testId, name, defaultSchema, systemId);
+    const { categoryId, testId, name } = req.body;
+    const result = await Test.updateTest(categoryId, testId, name, systemId);
     if (result.success) {
       return res.status(200).send(result.test);
     } else if (result.duplicate) {
@@ -142,11 +142,31 @@ const deleteTest = async (req, res, next) => {
   }
 };
 
-// Function 8: Delete a test
+// Function 8: Set Default schema for a test
 const setTestSchema = async (req, res, next) => {
   try {
     const systemId = 555;
     const { categoryId, testId, schemaId } = req.body;
+    // console.log("test ID " + testId);
+    // console.log("schema ID " + schemaId);
+    const result = await Test.setTestSchema(categoryId, testId, schemaId, systemId);
+    if (result.success) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(400).send({
+        success: false,
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Function 9: Set Default schema for a test
+const unsetTestSchema = async (req, res, next) => {
+  try {
+    const systemId = 555;
+    const { categoryId, testId } = req.body;
     console.log("test ID " + testId);
     console.log("schema ID " + schemaId);
     const result = await Test.setTestSchema(categoryId, testId, schemaId, systemId);
@@ -176,4 +196,5 @@ module.exports = {
   deleteTest,
 
   setTestSchema,
+  unsetTestSchema,
 };

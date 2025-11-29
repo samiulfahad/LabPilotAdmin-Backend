@@ -136,7 +136,7 @@ const deactivateSchema = async (req, res, next) => {
 const getSchemaByTestId = async (req, res, next) => {
   try {
     const { testId } = req.params;
-    // console.log("Fetching schema for testId:", testId);
+    console.log("Fetching schema for testId:", testId);
 
     const result = await TestSchema.findByTestId(testId);
     if (result.success) {

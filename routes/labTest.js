@@ -13,6 +13,7 @@ const {
   updateTest,
   deleteTest,
   setTestSchema,
+  unsetTestSchema
 } = require("../controller/labTest");
 
 const { validateAddTest, validateAddCat, validateEditTest, validateEditCat } = require("../validation/labTest");
@@ -40,10 +41,14 @@ router.post("/add", validateAddTest, handleValidationErrors, createTest);
 // Update a test
 router.patch("/edit", validateEditTest, handleValidationErrors, updateTest);
 
-// Update a test
-router.patch("/setTestSchema", setTestSchema);
 
 // Delete a test
 router.delete("/delete", deleteTest);
+
+// Update a test
+router.patch("/setTestSchema", setTestSchema);
+
+// Update a test
+router.patch("/unsetTestSchema", unsetTestSchema);
 
 module.exports = router;

@@ -22,7 +22,7 @@ router.get("/search/:schemaId", getSchema);
 router.get("/all", listSchema);
 
 // Get schema by testId
-router.get("/test/:testId", getSchemaByTestId);
+router.get("/:testId", getSchemaByTestId);
 
 // Get schemas by categoryId
 router.get("/category/:categoryId", getSchemasByCategoryId);

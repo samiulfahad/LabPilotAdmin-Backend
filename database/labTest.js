@@ -151,7 +151,7 @@ class Test {
       const test = {
         _id: new ObjectId(),
         name: name,
-        defaultSchema: null,
+        schemaId: null,
         createdAt: getGMT(),
         createdBy: systemId,
       };
@@ -180,8 +180,8 @@ class Test {
     }
   }
 
-  // Function 7: Update test
-  static async updateTest(categoryId, testId, newName, defaultSchema, systemId) {
+  // Function 7: Update test (simpler version)
+  static async updateTest(categoryId, testId, newName, systemId) {
     try {
       const db = getClient();
 
@@ -200,7 +200,8 @@ class Test {
         return { duplicate: true };
       }
 
-      const result = await db.collection("tests").findOneAndUpdate(
+      // Update the specific test within the category
+      const result = await db.collection("tests").updateOne(
         {
           _id: new ObjectId(categoryId),
           "tests._id": new ObjectId(testId),
@@ -208,25 +209,17 @@ class Test {
         {
           $set: {
             "tests.$.name": newName,
-            "tests.$.defaultSchema": defaultSchema,
             "tests.$.updatedAt": getGMT(),
             "tests.$.updatedBy": systemId,
-            updatedAt: getGMT(),
-            updatedBy: systemId,
           },
-        },
-        {
-          returnDocument: "after", // Returns the updated document
-          includeResultMetadata: true, // Includes operation metadata
         }
       );
 
-      if (!result.value) {
-        return { success: false, message: "Category/Test not found" };
+      if (result.matchedCount === 0 || result.modifiedCount === 0) {
+        return { success: false };
       }
 
-      // Return the updated category document with the modified tests
-      return { success: true, test: result.value };
+      return { success: true };
     } catch (e) {
       return handleError(e, "updateTest");
     }
@@ -259,6 +252,7 @@ class Test {
     }
   }
 
+  // Function 9: Set Default Schema
   static async setTestSchema(categoryId, testId, schemaId, systemId) {
     try {
       const db = getClient();
@@ -271,11 +265,9 @@ class Test {
         },
         {
           $set: {
-            "tests.$.defaultSchema": schemaId,
-            "tests.$.defaultSchemaAddedBy": systemId,
-            "tests.$.defaultSchemaAddedAt": getGMT(),
-            updatedAt: getGMT(),
-            updatedBy: systemId,
+            "tests.$.schemaId": schemaId,
+            "tests.$.schemaAddedBy": systemId,
+            "tests.$.schemaAddedAt": getGMT(),
           },
         }
       );
@@ -283,6 +275,38 @@ class Test {
       return result.modifiedCount > 0 ? { success: true } : { success: false };
     } catch (e) {
       return handleError(e, "setTestSchema");
+    }
+  }
+
+  // Function 10: Set Default Schema
+  static async unsetTestSchema(categoryId, testId, systemId) {
+    try {
+      const db = getClient();
+
+      // Update the specific test within the tests array
+      const result = await db.collection("tests").updateOne(
+        {
+          _id: new ObjectId(categoryId),
+          "tests._id": new ObjectId(testId),
+        },
+        {
+          $set: {
+            "tests.$.schemaId": null,
+            "tests.$.schemaRemovedBy": systemId,
+            "tests.$.schemaRemovedAt": getGMT(),
+            updatedAt: getGMT(),
+            updatedBy: systemId,
+          },
+          $unset: {
+            "tests.$.schemaAddedBy": "",
+            "tests.$.schemaAddedAt": "",
+          },
+        }
+      );
+
+      return result.modifiedCount > 0 ? { success: true } : { success: false };
+    } catch (e) {
+      return handleError(e, "unsetTestSchema");
     }
   }
 }
