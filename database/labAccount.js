@@ -12,7 +12,7 @@ const handleError = (e, methodName) => {
 };
 
 const defaultProjection = {
-  : 1,
+  name: 1,
   labId: 1,
   address: 1,
   email: 1,
@@ -44,7 +44,7 @@ class Lab {
     this.zoneId = new ObjectId(zoneId); // ✅ Consistent ObjectId
     this.subZoneId = new ObjectId(subZoneId); // ✅ Consistent ObjectId
     this.invoicePrice = 10;
-    this.labCommission = 4;
+    this.commission = 4;
     this.monthlyFee = 0;
     this.hasWarning = false;
     this.warning = "";
@@ -126,7 +126,7 @@ class Lab {
     }
   }
 
-  // Function 4: Update a Lab
+  // Function 4: Update Lab
   static async update(_id, newData, systemId) {
     try {
       const db = getClient();

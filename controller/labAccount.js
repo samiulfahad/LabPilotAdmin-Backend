@@ -73,7 +73,7 @@ const updateLab = async (req, res, next) => {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 777;
     const { _id, name, address, zoneId, subZoneId, contact1, contact2, email, isActive } = req.body;
-    const newData = { , address, zoneId, subZoneId, contact1, contact2, email, isActive };
+    const newData = { name, address, zoneId, subZoneId, contact1, contact2, email, isActive };
 
     const result = await Lab.update(_id, newData, systemId);
     if (result.success) {
