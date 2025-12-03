@@ -74,7 +74,8 @@ const updateSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 555;
-    const { schemaId, data } = req.body;
+    const { schemaId, categoryId, testId, name, description, isActive, sections } = req.body;
+    const data = { categoryId, testId, name, description, isActive, sections };
     // console.log(data);
     const result = await TestSchema.update(schemaId, data, systemId);
     if (result.success) {
