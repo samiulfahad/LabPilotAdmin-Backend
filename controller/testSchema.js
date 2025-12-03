@@ -7,8 +7,18 @@ const createTestSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user (from middleware)
     const systemId = req.user?.id || req.user?.systemId || 555; // Fallback for development
-    const { categoryId, testId, name, description, isActive, sections } = req.body;
-    const testSchema = { categoryId, testId, name, description, isActive, sections };
+    const { categoryId, testId, name, testName, isActive, sections, hasStaticStandardRange, staticStandardRange } =
+      req.body;
+    const testSchema = {
+      categoryId,
+      testId,
+      name,
+      testName,
+      isActive,
+      sections,
+      hasStaticStandardRange,
+      staticStandardRange,
+    };
     // console.log(testSchema);
 
     const result = await TestSchema.addNew(categoryId, testId, testSchema, systemId);
@@ -74,8 +84,29 @@ const updateSchema = async (req, res, next) => {
   try {
     // Get systemId from authenticated user
     const systemId = req.user?.id || req.user?.systemId || 555;
-    const { schemaId, categoryId, testId, name, description, isActive, sections } = req.body;
-    const data = { categoryId, testId, name, description, isActive, sections };
+
+    // console.log(req.body);
+    const {
+      schemaId,
+      categoryId,
+      testId,
+      name,
+      testName,
+      isActive,
+      sections,
+      hasStaticStandardRange,
+      staticStandardRange,
+    } = req.body;
+    const data = {
+      categoryId,
+      testId,
+      name,
+      testName,
+      isActive,
+      sections,
+      hasStaticStandardRange,
+      staticStandardRange,
+    };
     // console.log(data);
     const result = await TestSchema.update(schemaId, data, systemId);
     if (result.success) {
