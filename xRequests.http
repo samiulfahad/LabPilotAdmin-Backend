@@ -168,13 +168,13 @@ POST http://localhost:3000/api/v1/lab/testCategory/add HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Hormonez"
+    "name": "Hormoni"
 }
 
 
 # Route 2: Get category list
 ###
-GET http://localhost:3000/api/v1/lab/testCategory/all HTTP/1.1
+GET http://localhost:3000/api/v1/lab/testCategory/all/ HTTP/1.1
 content-type: application/json
 
 
@@ -214,13 +214,13 @@ POST http://localhost:3000/api/v1/lab/test/add HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId":"69335bacf2d45635764d583f",
-    "name": "T4"
+    "categoryId":"69336bfa0f1b41c6176fb0f7",
+    "name": "T5"
 }
 
 # Route 8: GET All Tests
 ###
-GET http://localhost:3000/api/v1/lab/test/all/6933606ae4812613255cd16c HTTP/1.1
+GET http://localhost:3000/api/v1/lab/test/all/69336bfa0f1b41c6176fb0f7 HTTP/1.1
 content-type: application/json
 
 
@@ -230,7 +230,7 @@ PATCH http://localhost:3000/api/v1/lab/test/edit HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": "6933606ae4812613255cd16c",
+    "categoryId": "69336bfa0f1b41c6176fb0f7",
     "testId" : "693360b5e4812613255cd16e",
     "name": "T4"
 }
