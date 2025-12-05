@@ -7,7 +7,8 @@ const { connect } = require("./database/connection");
 // Import routers
 const labAccountRouter = require("./routes/labAccount");
 const labZoneRouter = require("./routes/labZone");
-const labTestRouter = require("./routes/labTest");
+const testRouter = require("./routes/test");
+const testCategoryRouter = require("./routes/testCategory");
 const labAdminRouter = require("./routes/labAdmin");
 const labStaffRouter = require("./routes/labStaff");
 const labBilling = require("./routes/labBilling");
@@ -34,7 +35,8 @@ app.get("/", (req, res, next) => {
 // Use routers
 app.use("/api/v1/lab/account", labAccountRouter);
 app.use("/api/v1/lab/zone", labZoneRouter);
-app.use("/api/v1/lab/test", labTestRouter);
+app.use("/api/v1/lab/test", testRouter);
+app.use("/api/v1/lab/testCategory", testCategoryRouter);
 app.use("/api/v1/lab/admin", labAdminRouter);
 app.use("/api/v1/lab/staff", labStaffRouter);
 app.use("/api/v1/lab/billing", labBilling);

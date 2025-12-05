@@ -160,62 +160,68 @@ content-type: application/json
 
 
 
-#################### Test  ####################### 
+#################### Test Category  ####################### 
 
 # Route 1: Create a Test Category
 ###
-POST http://localhost:3000/api/v1/lab/test/category/add HTTP/1.1
+POST http://localhost:3000/api/v1/lab/testCategory/add HTTP/1.1
 content-type: application/json
 
 {
-    "categoryName": "Urine"
+    "name": "Hormonez"
 }
 
-# Route 2: Get a category with associated tests
+
+# Route 2: Get category list
 ###
-GET http://localhost:3000/api/v1/lab/test/category HTTP/1.1
+GET http://localhost:3000/api/v1/lab/testCategory/all HTTP/1.1
+content-type: application/json
+
+
+# Route 3: Get populated category list [ all categories with associated tests ]
+###
+GET http://localhost:3000/api/v1/lab/testCategory/populate HTTP/1.1
+content-type: application/json
+
+
+# Route 4: Edit category
+###
+PATCH http://localhost:3000/api/v1/lab/testCategory/edit HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId" : "6908f7046cefa0d6c1602163"
-}
-
-# Route 3: Get all categories with associated tests
-###
-GET http://localhost:3000/api/v1/lab/test/category/all HTTP/1.1
-content-type: application/json
-
-
-# Route 4: Edit category name
-###
-PATCH http://localhost:3000/api/v1/lab/test/category/edit HTTP/1.1
-content-type: application/json
-
-{
-    "categoryName": "urine",
-    "categoryId": "6908f7046cefa0d6c1602163"
+    "name": "Blood",
+    "categoryId": "6933607de4812613255cd16d"
 }
 
 # Route 5: Delete category
 ###
-DELETE http://localhost:3000/api/v1/lab/test/category/delete HTTP/1.1
+DELETE http://localhost:3000/api/v1/lab/testCategory/delete HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": "6908f6be0f340708b2671d49"
+    "categoryId": "693359b5e722c8cfd49d10e5"
 }
 
-# Route 6: Create Test
+
+#################### Test ####################### 
+
+
+# Route 1: Create Test
+
 ###
 POST http://localhost:3000/api/v1/lab/test/add HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId":"6908f7046cefa0d6c1602163",
-    "name": "Test 2",
-    "isOnline": false
+    "categoryId":"69335bacf2d45635764d583f",
+    "name": "T4"
 }
 
+# Route 8: GET All Tests
+###
+GET http://localhost:3000/api/v1/lab/test/all/6933606ae4812613255cd16c HTTP/1.1
+content-type: application/json
 
 
 # Route 7: Edit Test
@@ -224,10 +230,9 @@ PATCH http://localhost:3000/api/v1/lab/test/edit HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": "6908ee178fdfb3850b1f71b5",
-    "testId" : "6908f443cda96110c6acab54",
-    "name": "Xxxx",
-    "isOnline": false
+    "categoryId": "6933606ae4812613255cd16c",
+    "testId" : "693360b5e4812613255cd16e",
+    "name": "T4"
 }
 
 
@@ -237,8 +242,7 @@ DELETE http://localhost:3000/api/v1/lab/test/delete HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": "6908ee178fdfb3850b1f71b5",
-    "testId": "6908ee858fdfb3850b1f71b8"
+    "testId": "693360b5e4812613255cd16e"
 
 }
 
