@@ -6,7 +6,7 @@ const createCategory = async (req, res, next) => {
     const { name } = req.body;
     const result = await TestCategory.create(name);
     if (result.success) {
-      return res.status(201).send({ _id: result.categoryId });
+      return res.status(201).send({ _id: result.categoryId, name: name });
     } else if (result.duplicate) {
       return res.status(400).send({ duplicate: true });
     } else {
@@ -35,11 +35,13 @@ const listCategory = async (req, res, next) => {
 const updateCategory = async (req, res, next) => {
   try {
     const { categoryId, name } = req.body;
+    console.log(categoryId);
+    console.log(name);
     const result = await TestCategory.update(categoryId, name);
     if (result.success) {
-      return res.status(200).send({ success: true });
+      return res.status(201).send({ success: true });
     } else if (result.duplicate) {
-      return res.status(400).send({ duplicate: true });
+      return res.status(400).send({ duplicate: true, message: result.message });
     } else {
       return res.status(400).send({ success: false });
     }
@@ -51,7 +53,7 @@ const updateCategory = async (req, res, next) => {
 // Function 4: Delete Category
 const deleteCategory = async (req, res, next) => {
   try {
-    const { categoryId } = req.body;
+    const { categoryId } = req.params;
     const result = await TestCategory.delete(categoryId);
     if (result.success) {
       return res.status(200).send({ success: true });
@@ -68,6 +70,7 @@ const populateCategoryList = async (req, res, next) => {
   try {
     const result = await TestCategory.populateCategoryList();
     if (result?.success) {
+      // console.log(result.populatedList);
       return res.status(200).send(result.populatedList);
     } else {
       return res.status(400).send({ success: false });

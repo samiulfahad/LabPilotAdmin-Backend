@@ -19,7 +19,7 @@ class Test {
       categoryId = new ObjectId(categoryId);
       const db = getClient();
 
-      // Fixed: Check for duplicate name 
+      // Fixed: Check for duplicate name
       const existing = await db.collection(collectionName).findOne({
         name: name,
       });
@@ -34,7 +34,9 @@ class Test {
         schemaId: null,
       });
 
-      return result.insertedId ? { success: true, testId: result.insertedId } : { success: false };
+      return result.insertedId
+        ? { success: true, test: { _id: result.insertedId, name, categoryId } }
+        : { success: false };
     } catch (e) {
       return handleError(e, "create");
     }
@@ -64,13 +66,13 @@ class Test {
 
       // FIXED: Exclude current test from duplicate check
       const existing = await db.collection(collectionName).findOne({
-        _id: { $ne: testId }, // This line is critical!
+        // _id: { $ne: testId }, // This line is critical!
         name: name,
         categoryId: categoryId,
       });
 
       if (existing) {
-        return { duplicate: true, message: "Test Already exists in another category" };
+        return { duplicate: true, message: "Nothing changed" };
       }
 
       const result = await db.collection(collectionName).updateOne({ _id: testId }, { $set: { name, categoryId } });

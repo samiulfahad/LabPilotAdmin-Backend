@@ -21,7 +21,7 @@ router.get("/populate", populateCategoryList);
 router.patch("/edit", updateCategory);
 
 // Route 5: Delete a test
-router.delete("/delete", deleteCategory);
+router.delete("/delete/:categoryId", deleteCategory);
 
 
 module.exports = router;

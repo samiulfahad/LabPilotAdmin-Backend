@@ -8,7 +8,7 @@ const createTest = async (req, res, next) => {
     const { name, categoryId } = req.body;
     const result = await Test.create(name, categoryId);
     if (result.success) {
-      return res.status(201).send({success: true, testId: result.testId});
+      return res.status(201).send({ success: true, test: result.test });
     } else if (result.duplicate) {
       return res.status(400).send({ duplicate: true, message: result.message });
     } else {
@@ -22,18 +22,9 @@ const createTest = async (req, res, next) => {
 // Function 2: List all Tests
 const listTest = async (req, res, next) => {
   try {
-    const { categoryId } = req.params;
-    console.log(categoryId);
-    let result;
-    if (categoryId) {
-      result = await Test.findAll(categoryId);
-    } else {
-      result = await Test.findAll();
-    }
+    const result = await Test.findAll();
     if (result.success) {
       return res.status(201).send(result.testList);
-    } else if (result.duplicate) {
-      return res.status(400).send({ duplicate: true });
     } else {
       return res.status(400).send({ success: false });
     }
@@ -47,6 +38,9 @@ const updateTest = async (req, res, next) => {
   try {
     const { testId, categoryId, name } = req.body;
     const result = await Test.update(testId, categoryId, name);
+    // console.log(testId);
+    // console.log(categoryId);
+    // console.log(name);
     if (result.success) {
       return res.status(200).send({ success: true });
     } else if (result.duplicate) {
@@ -62,9 +56,8 @@ const updateTest = async (req, res, next) => {
 // Function 4: Delete a test
 const deleteTest = async (req, res, next) => {
   try {
-    const { testId } = req.body;
-
-    console.log(req.query);
+    const { testId } = req.params;
+    console.log(testId);
     const result = await Test.delete(testId);
     if (result.success) {
       return res.status(200).send({ success: true });

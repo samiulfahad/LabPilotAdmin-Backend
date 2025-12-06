@@ -14,13 +14,13 @@ const {
 router.post("/add",  createTest);
 
 // Route 2: Get all tests or by categoryId
-router.get("/all/:categoryId", listTest);
+router.get("/all", listTest);
 
 // Route 3: Update a test
 router.patch("/edit",  updateTest);
 
 // Route 4: Delete a test
-router.delete("/delete", deleteTest);
+router.delete("/delete/:testId", deleteTest);
 
 // Route 5: Set Test Schema
 router.patch("/setTestSchema", setTestSchema);

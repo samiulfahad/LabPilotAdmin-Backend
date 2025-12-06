@@ -55,7 +55,7 @@ class TestCategory {
       });
 
       if (existing) {
-        return { duplicate: true };
+        return { duplicate: true, message: "This name already exists" };
       }
 
       const result = await db.collection(collectionName).updateOne({ _id: categoryId }, { $set: { name: name } });
@@ -100,7 +100,6 @@ class TestCategory {
         {
           $project: {
             categoryName: "$name",
-            categoryId: "$_id",
             testList: {
               $map: {
                 input: "$testList",

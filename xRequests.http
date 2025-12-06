@@ -168,7 +168,7 @@ POST http://localhost:3000/api/v1/lab/testCategory/add HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Hormoni"
+    "name": "Hormon22"
 }
 
 
@@ -218,31 +218,31 @@ content-type: application/json
     "name": "T5"
 }
 
-# Route 8: GET All Tests
+# Route 2: GET All Tests [ url/categoryId for tests under a category ]
 ###
 GET http://localhost:3000/api/v1/lab/test/all/69336bfa0f1b41c6176fb0f7 HTTP/1.1
 content-type: application/json
 
 
-# Route 7: Edit Test
+# Route 3: Edit Test
 ###
 PATCH http://localhost:3000/api/v1/lab/test/edit HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": "69336bfa0f1b41c6176fb0f7",
-    "testId" : "693360b5e4812613255cd16e",
-    "name": "Tt"
+    "testId" : "69335f00584a9e59bf67f206",
+    "categoryId": "6933607de4812613255cd16d",
+    "name": "RBS2"
 }
 
 
-# Route 8: Delete test
+# Route 4: Delete test
 ###
 DELETE http://localhost:3000/api/v1/lab/test/delete HTTP/1.1
 content-type: application/json
 
 {
-    "testId": "693360b5e4812613255cd16e"
+    "testId": "69335f00584a9e59bf67f206"
 
 }
 
