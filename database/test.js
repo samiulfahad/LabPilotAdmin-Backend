@@ -106,7 +106,8 @@ class Test {
       testId = new ObjectId(testId);
       schemaId = new ObjectId(schemaId);
       const db = getClient();
-
+      // console.log(testId);
+      // console.log(schemaId);
       const result = await db.collection(collectionName).updateOne({ _id: testId }, { $set: { schemaId: schemaId } });
       return result.modifiedCount > 0 ? { success: true } : { success: false };
     } catch (e) {

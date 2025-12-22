@@ -94,7 +94,7 @@ const updateSchema = async (req, res, next) => {
 const activateSchema = async (req, res, next) => {
   try {
     const { schemaId } = req.params;
-    const result = await TestSchema.activate(schemaId, systemId);
+    const result = await TestSchema.activate(schemaId);
 
     if (result.success) {
       return res.status(200).send({ success: true, message: result.message });
@@ -125,9 +125,8 @@ const deactivateSchema = async (req, res, next) => {
 const getSchemaByTestId = async (req, res, next) => {
   try {
     const { testId } = req.params;
-    console.log("Fetching schema for testId:", testId);
-
-    const result = await TestSchema.findByTestId(testId);
+    const { isActive } = req.query;
+    const result = await TestSchema.findByTestId(testId, isActive);
     if (result.success) {
       // console.log(result.list);
       return res.status(200).send(result.list);

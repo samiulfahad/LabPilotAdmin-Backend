@@ -108,7 +108,7 @@ class TestSchema {
         .collection("testSchema")
         .updateOne({ _id: new ObjectId(schemaId) }, { $set: updateFields });
 
-      console.log("Update result:", updateResult);
+      // console.log("Update result:", updateResult);
 
       // Check if document was found and updated
       if (updateResult.matchedCount === 0) {
@@ -154,7 +154,7 @@ class TestSchema {
             activatedAt: getGMT(),
           },
           $unset: {
-            deactivatedAt: ""
+            deactivatedAt: "",
           },
         }
       );
@@ -199,11 +199,16 @@ class TestSchema {
   }
 
   // Function 8: Find schema by testId
-  static async findByTestId(testId) {
+  static async findByTestId(testId, isActive ) {
     try {
       const db = getClient();
-      const list = await db.collection("testSchema").find({ testId }).toArray();
-      console.log(list);
+      let list;
+      if (isActive === "true") {
+        list = await db.collection("testSchema").find({ testId, isActive: true }).toArray();
+      } else {
+        list = await db.collection("testSchema").find({ testId }).toArray();
+      }
+      // console.log(list);
       if (list) {
         return {
           success: true,

@@ -57,7 +57,7 @@ const updateTest = async (req, res, next) => {
 const deleteTest = async (req, res, next) => {
   try {
     const { testId } = req.params;
-    console.log(testId);
+    // console.log(testId);
     const result = await Test.delete(testId);
     if (result.success) {
       return res.status(200).send({ success: true });
