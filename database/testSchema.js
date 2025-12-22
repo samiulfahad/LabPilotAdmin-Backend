@@ -13,14 +13,11 @@ const handleError = (e, methodName) => {
 
 class TestSchema {
   // Function 1: create a test schema
-  static async addNew(categoryId, testId, schema, systemId) {
+  static async addNew(schema) {
     try {
       const db = getClient();
       const newSchema = {
-        categoryId,
-        testId,
         ...schema,
-        createdBy: systemId,
         createdAt: getGMT(),
       };
       const result = await db.collection("testSchema").insertOne(newSchema);
@@ -96,14 +93,13 @@ class TestSchema {
   }
 
   // Function 5: Update a schema - Simple and reliable
-  static async update(schemaId, updateData, systemId) {
+  static async update(schemaId, updateData) {
     try {
       const db = getClient();
 
       // Prepare update object
       const updateFields = {
         ...updateData,
-        updatedBy: systemId,
         updatedAt: getGMT(),
       };
 
@@ -145,7 +141,7 @@ class TestSchema {
   }
 
   // Function 6: Activate schema
-  static async activate(schemaId, systemId) {
+  static async activate(schemaId) {
     try {
       const db = getClient();
 
@@ -155,12 +151,10 @@ class TestSchema {
         {
           $set: {
             isActive: true,
-            activatedBy: systemId,
             activatedAt: getGMT(),
           },
           $unset: {
-            deactivatedAt: "",
-            deactivatedBy: "",
+            deactivatedAt: ""
           },
         }
       );
@@ -176,7 +170,7 @@ class TestSchema {
   }
 
   // Function 7: Deactivate schema
-  static async deactivate(schemaId, systemId) {
+  static async deactivate(schemaId) {
     try {
       const db = getClient();
 
@@ -186,12 +180,10 @@ class TestSchema {
         {
           $set: {
             isActive: false,
-            deactivatedBy: systemId,
             deactivatedAt: getGMT(),
           },
           $unset: {
             activatedAt: "",
-            activatedBy: "",
           },
         }
       );
@@ -225,86 +217,6 @@ class TestSchema {
       }
     } catch (e) {
       return handleError(e, "findByTestId");
-    }
-  }
-
-  // Function 9: Find schemas by categoryId
-  static async findByCategoryId(categoryId) {
-    try {
-      const db = getClient();
-      const list = await db.collection("testSchema").find({ categoryId }).toArray();
-      console.log(list);
-      if (list) {
-        return { success: true, list };
-      } else {
-        return { success: false };
-      }
-    } catch (e) {
-      return handleError(e, "findByCategoryId");
-    }
-  }
-  // Function 10: Get all schemas with populated category and test names
-  static async findAllPopulated() {
-    try {
-      const db = getClient();
-
-      // Using aggregation to join with categories collection
-      const list = await db
-        .collection("testSchema")
-        .aggregate([
-          {
-            $lookup: {
-              from: "categories", // your categories collection name
-              localField: "categoryId",
-              foreignField: "_id",
-              as: "categoryInfo",
-            },
-          },
-          {
-            $unwind: {
-              path: "$categoryInfo",
-              preserveNullAndEmptyArrays: true, // in case category is deleted
-            },
-          },
-          {
-            $addFields: {
-              categoryName: "$categoryInfo.categoryName",
-              // Find the specific test within the category's tests array
-              testInfo: {
-                $arrayElemAt: [
-                  {
-                    $filter: {
-                      input: "$categoryInfo.tests",
-                      as: "test",
-                      cond: { $eq: ["$$test._id", "$testId"] },
-                    },
-                  },
-                  0,
-                ],
-              },
-            },
-          },
-          {
-            $addFields: {
-              nameFromCollection: "$testInfo.name",
-            },
-          },
-          {
-            $project: {
-              categoryInfo: 0,
-              testInfo: 0,
-            },
-          },
-        ])
-        .toArray();
-
-      if (list) {
-        return { success: true, list };
-      } else {
-        return { success: false };
-      }
-    } catch (e) {
-      return handleError(e, "findAllPopulated");
     }
   }
 }

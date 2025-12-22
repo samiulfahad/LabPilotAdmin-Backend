@@ -5,24 +5,10 @@ const TestSchema = require("../database/testSchema");
 // Function 1: Create a test schema
 const createTestSchema = async (req, res, next) => {
   try {
-    // Get systemId from authenticated user (from middleware)
-    const systemId = req.user?.id || req.user?.systemId || 555; // Fallback for development
-    const { categoryId, testId, name, testName, isActive, sections, hasStaticStandardRange, staticStandardRange } =
-      req.body;
-    const testSchema = {
-      categoryId,
-      testId,
-      name,
-      testName,
-      isActive,
-      sections,
-      hasStaticStandardRange,
-      staticStandardRange,
-    };
+    const { name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange } = req.body;
+    const testSchema = { name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange };
     // console.log(testSchema);
-
-    const result = await TestSchema.addNew(categoryId, testId, testSchema, systemId);
-
+    const result = await TestSchema.addNew(testSchema);
     if (result.success) {
       // console.log(result.lab);
       return res.status(201).send({ success: true, schemaId: result.schemaId });
@@ -38,7 +24,7 @@ const createTestSchema = async (req, res, next) => {
 const getSchema = async (req, res, next) => {
   try {
     const { schemaId } = req.params;
-    console.log(schemaId);
+    // console.log(schemaId);
     const result = await TestSchema.find(schemaId);
     if (result.success) {
       return res.status(200).send(result.schema);
@@ -82,33 +68,11 @@ const deleteSchema = async (req, res, next) => {
 // Function 5: Update Schema
 const updateSchema = async (req, res, next) => {
   try {
-    // Get systemId from authenticated user
-    const systemId = req.user?.id || req.user?.systemId || 555;
-
-    // console.log(req.body);
-    const {
-      schemaId,
-      categoryId,
-      testId,
-      name,
-      testName,
-      isActive,
-      sections,
-      hasStaticStandardRange,
-      staticStandardRange,
-    } = req.body;
-    const data = {
-      categoryId,
-      testId,
-      name,
-      testName,
-      isActive,
-      sections,
-      hasStaticStandardRange,
-      staticStandardRange,
-    };
+    const { schemaId, name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange } =
+      req.body;
+    const data = { name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange };
     // console.log(data);
-    const result = await TestSchema.update(schemaId, data, systemId);
+    const result = await TestSchema.update(schemaId, data);
     if (result.success) {
       return res.status(200).send({
         success: true,
@@ -129,10 +93,7 @@ const updateSchema = async (req, res, next) => {
 // Function 6: Activate Schema
 const activateSchema = async (req, res, next) => {
   try {
-    // Get systemId from authenticated user
-    const systemId = req.user?.id || req.user?.systemId || 555;
     const { schemaId } = req.params;
-
     const result = await TestSchema.activate(schemaId, systemId);
 
     if (result.success) {
@@ -148,12 +109,8 @@ const activateSchema = async (req, res, next) => {
 // Function 7: Deactivate Schema
 const deactivateSchema = async (req, res, next) => {
   try {
-    // Get systemId from authenticated user
-    const systemId = req.user?.id || req.user?.systemId || 555;
     const { schemaId } = req.params;
-
-    const result = await TestSchema.deactivate(schemaId, systemId);
-
+    const result = await TestSchema.deactivate(schemaId);
     if (result.success) {
       return res.status(200).send({ success: true });
     } else {
@@ -185,41 +142,6 @@ const getSchemaByTestId = async (req, res, next) => {
   }
 };
 
-// Function 9: Get Schemas by Category ID
-const getSchemasByCategoryId = async (req, res, next) => {
-  try {
-    const { categoryId } = req.params;
-    console.log("Fetching schemas for categoryId:", categoryId);
-
-    const result = await TestSchema.findByCategoryId(categoryId);
-    console.log(result.list);
-    if (result.success) {
-      return res.status(200).send(result.list);
-    } else {
-      return res.status(404).send({
-        success: false,
-        message: "No schemas found for this category",
-      });
-    }
-  } catch (e) {
-    next(e);
-  }
-};
-
-// Function 10: Get All Schemas with Populated Data
-const listPopulatedSchemas = async (req, res, next) => {
-  try {
-    const result = await TestSchema.findAllPopulated();
-    if (result.success) {
-      return res.status(200).send(result.list);
-    } else {
-      return res.status(400).send({ success: false });
-    }
-  } catch (e) {
-    next(e);
-  }
-};
-
 module.exports = {
   createTestSchema,
   getSchema,
@@ -229,6 +151,4 @@ module.exports = {
   activateSchema,
   deactivateSchema,
   getSchemaByTestId,
-  getSchemasByCategoryId,
-  listPopulatedSchemas,
 };
