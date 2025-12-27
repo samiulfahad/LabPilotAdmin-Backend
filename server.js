@@ -21,7 +21,7 @@ const app = express();
 // Middlewares
 app.use(express.json({ limit: "10kb" }));
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://labpilot.netlify.app"], // Allow only your frontend
+  origin: ["http://localhost:5173", "https://sfahad-admin.netlify.app"], // Allow only your frontend
   credentials: true, // Allow cookies and authorization headers
 };
 
