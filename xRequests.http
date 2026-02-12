@@ -220,7 +220,7 @@ content-type: application/json
 
 # Route 2: GET All Tests [ url/categoryId for tests under a category ]
 ###
-GET http://localhost:3000/api/v1/lab/test/all/69336bfa0f1b41c6176fb0f7 HTTP/1.1
+GET http://localhost:3000/api/v1/lab/test/all HTTP/1.1
 content-type: application/json
 
 
