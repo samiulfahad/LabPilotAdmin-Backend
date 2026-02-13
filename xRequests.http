@@ -464,3 +464,9 @@ content-type: application/json
     "schemaId": "69278a9380080a13a959c6ff"
 }
 
+
+# Route 8: Get Active Schema of a Test by Test ID
+###
+GET http://localhost:3000/api/v1/schema/active/693d9f31a2469caf76ab7826 HTTP/1.1
+
+

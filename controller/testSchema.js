@@ -141,6 +141,25 @@ const getSchemaByTestId = async (req, res, next) => {
   }
 };
 
+// Function 9: Get Schema by Test ID (from Client)
+const getActiveSchemaByTestId = async (req, res, next) => {
+  try {
+    const { testId } = req.params;
+    const result = await TestSchema.findActiveOnlyByTestId(testId);
+    if (result.success) {
+      // console.log(result.list);
+      return res.status(200).send(result.list);
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: result.error || "Schema not found for this test",
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   createTestSchema,
   getSchema,
@@ -150,4 +169,5 @@ module.exports = {
   activateSchema,
   deactivateSchema,
   getSchemaByTestId,
+  getActiveSchemaByTestId,
 };

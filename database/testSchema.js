@@ -224,6 +224,28 @@ class TestSchema {
       return handleError(e, "findByTestId");
     }
   }
+
+  static async findActiveOnlyByTestId(testId ) {
+    try {
+      const db = getClient();
+      const list = await db.collection("testSchema").find({ testId, isActive: true }).toArray();
+      // console.log(list);
+      if (list) {
+        return {
+          success: true,
+          list,
+        };
+      } else {
+        return {
+          success: false,
+          error: "No schema found for this test",
+        };
+      }
+    } catch (e) {
+      return handleError(e, "findByTestId");
+    }
+  }
+
 }
 
 module.exports = TestSchema;

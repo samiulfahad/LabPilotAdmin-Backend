@@ -9,6 +9,7 @@ const {
   activateSchema,
   deactivateSchema,
   getSchemaByTestId,
+  getActiveSchemaByTestId
 } = require("../controller/testSchema");
 
 // Add new schema
@@ -22,6 +23,9 @@ router.get("/all", listSchema);
 
 // Get schema by testId
 router.get("/:testId", getSchemaByTestId);
+
+// Get active schema only by testId
+router.get("/active/:testId", getActiveSchemaByTestId);
 
 // Delete a schema
 router.delete("/delete/:schemaId", deleteSchema);
