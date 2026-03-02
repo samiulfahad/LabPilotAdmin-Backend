@@ -1,0 +1,4 @@
+const dbNames = {
+    testCatalog: "testCatalog",
+
+}

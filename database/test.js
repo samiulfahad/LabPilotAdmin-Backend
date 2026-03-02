@@ -10,7 +10,7 @@ const handleError = (e, methodName) => {
   return { success: false }; // Better return value
 };
 
-const collectionName = "test";
+const collectionName = "testCatalog";
 
 class Test {
   // Function 1: Create test

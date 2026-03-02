@@ -13,6 +13,7 @@ const labAdminRouter = require("./routes/labAdmin");
 const labStaffRouter = require("./routes/labStaff");
 const labBilling = require("./routes/labBilling");
 const testSchema = require("./routes/testSchema");
+const reportRouter = require("./routes/report");
 
 // const categoryRouter = require("./routes/category");
 
@@ -41,6 +42,7 @@ app.use("/api/v1/lab/admin", labAdminRouter);
 app.use("/api/v1/lab/staff", labStaffRouter);
 app.use("/api/v1/lab/billing", labBilling);
 app.use("/api/v1/schema", testSchema);
+app.use("/api/v1/report", reportRouter);
 
 // 404 Not Found Handler
 app.use((req, res, next) => {
