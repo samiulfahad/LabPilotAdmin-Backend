@@ -2,7 +2,7 @@
 
 const { getClient } = require("./connection");
 const handleError = (e, methodName) => {
-  console.log("Error Location: DB File (database > test.js)");
+  console.log("Error Location: DB File (database > report.js)");
   console.log(`Method Name: ${methodName}`);
   console.log(`Error Message: ${e.message}`);
   return { success: false }; // Better return value
@@ -19,7 +19,7 @@ class Report {
       const result = await db.collection(collectionName).insertOne(data);
 
       return result.insertedId
-        ? { success: true, test: { _id: result.insertedId, name, categoryId } }
+        ? { success: true, test: { _id: result.insertedId } }
         : { success: false };
     } catch (e) {
       return handleError(e, "create");

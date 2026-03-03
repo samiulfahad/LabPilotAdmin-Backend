@@ -1,11 +1,12 @@
 /** @format */
 
-const Test = require("../database/report");
+const Report = require("../database/report");
 
 // Function 1: Create a test
 const createReport = async (req, res, next) => {
   try {
     const { data } = req.body;
+    console.log(data);
     const result = await Report.create(data);
     if (result.success) {
       return res.status(201).send({ success: true });
