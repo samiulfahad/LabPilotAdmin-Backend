@@ -1,16 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createReport,
-  listReports,
-} = require("../controller/report");
+const { createReport, listReports, deleteReport } = require("../controller/report");
 
+// Route 1: Create a Report
+router.post("/add", createReport);
 
-// Route 1: Create a test
-router.post("/add",  createReport);
-
-// Route 2: Get all tests or by categoryId
+// Route 2: Get all Reports
 router.get("/all", listReports);
 
+// Route 3: Delete Report
+router.delete("/delete/:id", deleteReport);
 
 module.exports = router;

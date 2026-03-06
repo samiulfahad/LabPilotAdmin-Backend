@@ -2,7 +2,7 @@
 
 const Report = require("../database/report");
 
-// Function 1: Create a test
+// Function 1: Create a Report
 const createReport = async (req, res, next) => {
   try {
     const { data } = req.body;
@@ -20,7 +20,7 @@ const createReport = async (req, res, next) => {
   }
 };
 
-// Function 2: List all Tests
+// Function 2: List all Reports
 const listReports = async (req, res, next) => {
   try {
     const result = await Report.findAll();
@@ -34,9 +34,25 @@ const listReports = async (req, res, next) => {
   }
 };
 
+// Function 3: Delete a Report
+const deleteReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const result = await Report.delete(id);
+    if (result.success) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(400).send({ success: false });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
 
 module.exports = {
   // Test endpoints
   createReport,
-  listReports
+  listReports,
+  deleteReport,
 };
