@@ -6,7 +6,6 @@ const Report = require("../database/report");
 const createReport = async (req, res, next) => {
   try {
     const { data } = req.body;
-    console.log(data);
     const result = await Report.create(data);
     if (result.success) {
       return res.status(201).send({ success: true });
@@ -25,7 +24,7 @@ const listReports = async (req, res, next) => {
   try {
     const result = await Report.findAll();
     if (result.success) {
-      return res.status(201).send(result.reports);
+      return res.status(200).send(result.reports);
     } else {
       return res.status(400).send({ success: false });
     }
@@ -34,11 +33,41 @@ const listReports = async (req, res, next) => {
   }
 };
 
-// Function 3: Delete a Report
+// Function 3: Get a single Report by ID
+const getReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await Report.findById(id);
+    if (result.success) {
+      return res.status(200).send(result.report);
+    } else {
+      return res.status(404).send({ success: false, message: result.message || "Report not found" });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Function 4: Update a Report
+const updateReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { data } = req.body;
+    const result = await Report.update(id, data);
+    if (result.success) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(404).send({ success: false, message: result.message || "Report not found" });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Function 5: Delete a Report
 const deleteReport = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const result = await Report.delete(id);
     if (result.success) {
       return res.status(200).send({ success: true });
@@ -51,8 +80,9 @@ const deleteReport = async (req, res, next) => {
 };
 
 module.exports = {
-  // Test endpoints
   createReport,
   listReports,
+  getReport,
+  updateReport,
   deleteReport,
 };
