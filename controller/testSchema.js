@@ -5,8 +5,8 @@ const TestSchema = require("../database/testSchema");
 // Function 1: Create a test schema
 const createTestSchema = async (req, res, next) => {
   try {
-    const { name, version, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange } = req.body;
-    const testSchema = { name, version, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange };
+    const { name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange } = req.body;
+    const testSchema = { name, description, testId, isActive, sections, hasStaticStandardRange, staticStandardRange };
     // console.log(testSchema);
     const result = await TestSchema.addNew(testSchema);
     if (result.success) {
